@@ -4,8 +4,11 @@
 	"package": "com.minecrafttas.savestatemod.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"MixinChunkMap"
 	],
 	"client": [
+		"client.accessors.AccessorKeyMapping",
+		"client.HookMinecraft"
 	],
 	"injectors": {
 		"defaultRequire": 1
