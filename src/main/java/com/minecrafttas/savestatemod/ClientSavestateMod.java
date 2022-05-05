@@ -6,6 +6,7 @@ public class ClientSavestateMod implements ClientModInitializer{
 
 	@Override
 	public void onInitializeClient() {
+		SavestateMod.LOGGER.info("Initialized ClientSide");
 	}
 
 }
