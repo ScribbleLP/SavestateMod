@@ -1,8 +1,13 @@
 package com.minecrafttas.savestatemod;
 
+import com.minecrafttas.savestatemod.mixin.AccessorChunkMap;
+import com.minecrafttas.savestatemod.mixin.AccessorMinecraftServer;
+
+import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
@@ -26,7 +31,10 @@ public class WorldHacks {
 		
 		ChunkPos chunkPos = new ChunkPos(new BlockPos(level.getLevelData().getXSpawn(), 0, level.getLevelData().getZSpawn()));
 		
+		level.save(null, true, false);
+		
 		chunkSource.removeRegionTicket(TicketType.START, chunkPos, 11, Unit.INSTANCE);
+		
 		
 //		ChunkMapDuck cmduck=(ChunkMapDuck) chunkSource.chunkMap;
 //		cmduck.unloadChunks();
@@ -39,6 +47,11 @@ public class WorldHacks {
 		
 		ChunkPos chunkPos = new ChunkPos(new BlockPos(level.getLevelData().getXSpawn(), 0, level.getLevelData().getZSpawn()));
 		chunkSource.addRegionTicket(TicketType.START, chunkPos, 11, Unit.INSTANCE);
+
+//		AccessorChunkMap map=(AccessorChunkMap) chunkSource.chunkMap;
+//		map.getChunkMap().clear();
+//		AccessorMinecraftServer acserver= (AccessorMinecraftServer) mcserver;
+//		acserver.invokeLoadLevel();
 	}
 	
 	public static void loadPlayer() {
@@ -50,6 +63,19 @@ public class WorldHacks {
 //			player.connection.send(new CustomRespawnPacket(serverLevel.dimensionType(), serverLevel.dimension(), BiomeManager.obfuscateSeed(serverLevel.getSeed()), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), serverLevel.isDebug(), serverLevel.isFlat(), true, true));
 //			player.changeDimension(serverLevel);
 		});
+	}
+
+	public static void showTickets() {
+		MinecraftServer mcserver = Minecraft.getInstance().getSingleplayerServer();
+		ServerLevel level=mcserver.overworld();
+		ServerChunkCache chunkSource=level.getChunkSource();
+		
+		AccessorChunkMap map=(AccessorChunkMap) chunkSource.chunkMap;
+		Long2ObjectLinkedOpenHashMap<ChunkHolder> chunkMap=map.getChunkMap();
+		chunkMap.forEach((wat, chunkHolder)->{
+			System.out.println(ChunkHolder.getStatus(chunkHolder.getTicketLevel()));
+		});
+		
 	}
 
 }

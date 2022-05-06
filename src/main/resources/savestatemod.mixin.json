@@ -4,7 +4,9 @@
 	"package": "com.minecrafttas.savestatemod.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"MixinChunkMap"
+		"MixinChunkMap",
+		"AccessorChunkMap",
+		"AccessorMinecraftServer"
 	],
 	"client": [
 		"client.accessors.AccessorKeyMapping",

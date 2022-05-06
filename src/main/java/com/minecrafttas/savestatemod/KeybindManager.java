@@ -24,6 +24,7 @@ public class KeybindManager {
 	private KeyMapping testingKey2 = new KeyMapping("Testing", GLFW.GLFW_KEY_B, "Savestate Keybinds");
 	private KeyMapping testingKey3 = new KeyMapping("Testing", GLFW.GLFW_KEY_N, "Savestate Keybinds");
 	private KeyMapping testingKey4 = new KeyMapping("Testing", GLFW.GLFW_KEY_M, "Savestate Keybinds");
+	private KeyMapping testingKey5 = new KeyMapping("Testing", GLFW.GLFW_KEY_F12, "Savestate Keybinds");
 
 	/**
 	 * Categories for all key binds used.
@@ -57,6 +58,9 @@ public class KeybindManager {
 		}
 		else if (this.isKeyDown(mc, testingKey4)) {
 			WorldHacks.loadPlayer();
+		}
+		else if (this.isKeyDown(mc, testingKey5)) {
+			WorldHacks.showTickets();
 		}
 	}
 
