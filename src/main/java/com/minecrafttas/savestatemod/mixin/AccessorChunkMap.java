@@ -14,4 +14,11 @@ public interface AccessorChunkMap {
 	
 	@Accessor("updatingChunkMap")
 	public Long2ObjectLinkedOpenHashMap<ChunkHolder> getChunkMap();
+	
+	@Accessor("visibleChunkMap")
+	public Long2ObjectLinkedOpenHashMap<ChunkHolder> getChunkMap2();
+	
+	@Accessor("pendingUnloads")
+	public Long2ObjectLinkedOpenHashMap<ChunkHolder> getChunkMap3();
+	
 }

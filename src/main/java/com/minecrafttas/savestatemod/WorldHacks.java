@@ -1,7 +1,8 @@
 package com.minecrafttas.savestatemod;
 
 import com.minecrafttas.savestatemod.mixin.AccessorChunkMap;
-import com.minecrafttas.savestatemod.mixin.AccessorMinecraftServer;
+import com.minecrafttas.savestatemod.mixin.AccessorDimensionDataStorage;
+import com.minecrafttas.savestatemod.mixin.AccessorServerChunkCache;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -35,15 +36,19 @@ public class WorldHacks {
 		
 		chunkSource.removeRegionTicket(TicketType.START, chunkPos, 11, Unit.INSTANCE);
 		
-		
-//		ChunkMapDuck cmduck=(ChunkMapDuck) chunkSource.chunkMap;
-//		cmduck.unloadChunks();
 	}
 	
 	public static void loadWorld() {
 		MinecraftServer mcserver = Minecraft.getInstance().getSingleplayerServer();
 		ServerLevel level=mcserver.overworld();
 		ServerChunkCache chunkSource=level.getChunkSource();
+		
+		AccessorChunkMap cmduck=(AccessorChunkMap) chunkSource.chunkMap;
+		cmduck.getChunkMap().clear();
+		cmduck.getChunkMap2().clear();
+		cmduck.getChunkMap3().clear();
+		((AccessorServerChunkCache) chunkSource).invokeClearCache();
+		((AccessorDimensionDataStorage) ((AccessorServerChunkCache) chunkSource).getDimensionDataStorage()).getCache().clear();
 		
 		ChunkPos chunkPos = new ChunkPos(new BlockPos(level.getLevelData().getXSpawn(), 0, level.getLevelData().getZSpawn()));
 		chunkSource.addRegionTicket(TicketType.START, chunkPos, 11, Unit.INSTANCE);

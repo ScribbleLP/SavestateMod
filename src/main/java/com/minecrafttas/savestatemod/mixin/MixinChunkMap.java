@@ -28,11 +28,11 @@ public class MixinChunkMap{
 	
 	@Inject(method = "processUnloads", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;scheduleUnload(JLnet/minecraft/server/level/ChunkHolder;)V"))
 	public void inject_processUnloads(CallbackInfo ci) {
-		System.out.println("Unload!");
+//		System.out.println("Unload!");
 	}
 	
 	@Inject(method = "scheduleChunkLoad", at = @At(value = "RETURN", ordinal = 0))
 	public void injectLoad(CallbackInfoReturnable<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> ci) {
-		System.out.println("Load!");
+//		System.out.println("Load!");
 	}
 }

@@ -5,8 +5,12 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"MixinChunkMap",
+		"MixinChunkHolder",
 		"AccessorChunkMap",
-		"AccessorMinecraftServer"
+		"AccessorMinecraftServer",
+		"MixinDistanceManager",
+		"AccessorServerChunkCache",
+		"AccessorDimensionDataStorage"
 	],
 	"client": [
 		"client.accessors.AccessorKeyMapping",
