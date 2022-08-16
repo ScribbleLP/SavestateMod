@@ -5,6 +5,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"MixinChunkMap",
+		"MixinMinecraftServer",
 		"MixinChunkHolder",
 		"AccessorChunkMap",
 		"AccessorMinecraftServer",

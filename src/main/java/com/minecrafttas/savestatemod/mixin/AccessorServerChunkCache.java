@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
+import net.minecraft.server.level.DistanceManager;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
@@ -13,4 +14,6 @@ public interface AccessorServerChunkCache {
 	public DimensionDataStorage getDimensionDataStorage();
 	@Invoker("clearCache")
 	public void invokeClearCache();
+	@Accessor
+	public DistanceManager getDistanceManager();
 }
