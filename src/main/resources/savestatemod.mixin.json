@@ -6,12 +6,7 @@
 	"mixins": [
 		"MixinChunkMap",
 		"MixinMinecraftServer",
-		"MixinChunkHolder",
-		"AccessorChunkMap",
-		"AccessorMinecraftServer",
-		"MixinDistanceManager",
-		"AccessorServerChunkCache",
-		"AccessorDimensionDataStorage"
+		"MixinChunkHolder"
 	],
 	"client": [
 		"client.accessors.AccessorKeyMapping",
