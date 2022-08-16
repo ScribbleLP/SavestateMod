@@ -20,11 +20,11 @@ import net.minecraft.client.Minecraft;
 @Environment(EnvType.CLIENT)
 public class KeybindManager {
 	
-	private KeyMapping testingKey = new KeyMapping("Testing", GLFW.GLFW_KEY_V, "Savestate Keybinds");
-	private KeyMapping testingKey2 = new KeyMapping("Testing", GLFW.GLFW_KEY_B, "Savestate Keybinds");
-	private KeyMapping testingKey3 = new KeyMapping("Testing", GLFW.GLFW_KEY_N, "Savestate Keybinds");
-	private KeyMapping testingKey4 = new KeyMapping("Testing", GLFW.GLFW_KEY_M, "Savestate Keybinds");
-	private KeyMapping testingKey5 = new KeyMapping("Testing", GLFW.GLFW_KEY_F12, "Savestate Keybinds");
+	private KeyMapping testingKeyV = new KeyMapping("Testing", GLFW.GLFW_KEY_V, "Savestate Keybinds");
+	private KeyMapping testingKeyB = new KeyMapping("Testing", GLFW.GLFW_KEY_B, "Savestate Keybinds");
+	private KeyMapping testingKeyN = new KeyMapping("Testing", GLFW.GLFW_KEY_N, "Savestate Keybinds");
+	private KeyMapping testingKeyM = new KeyMapping("Testing", GLFW.GLFW_KEY_M, "Savestate Keybinds");
+	private KeyMapping testingKeyF12 = new KeyMapping("Testing", GLFW.GLFW_KEY_F12, "Savestate Keybinds");
 
 	/**
 	 * Categories for all key binds used.
@@ -39,7 +39,7 @@ public class KeybindManager {
 		final Map<String, Integer> categories = AccessorKeyMapping.getCategorySorting();
 		for (int i = 0; i < this.keybindCategories.length; i++) categories.put(this.keybindCategories[i], i+8);
 		// Finish by adding Keybinds
-		return ArrayUtils.addAll(keyMappings, testingKey, testingKey2, testingKey3, testingKey4);
+		return ArrayUtils.addAll(keyMappings, testingKeyV, testingKeyB, testingKeyN, testingKeyM);
 	}
 
 	/**
@@ -47,20 +47,19 @@ public class KeybindManager {
 	 * @param mc Instance of minecraft
 	 */
 	public void onGameLoop(Minecraft mc) {
-		if (this.isKeyDown(mc, testingKey)) {
+		if (this.isKeyDown(mc, testingKeyV)) {
 			WorldHacks.unloadPlayers();
 		}
-		else if (this.isKeyDown(mc, testingKey2)) {
+		else if (this.isKeyDown(mc, testingKeyB)) {
 			WorldHacks.unloadWorld();
 		}
-		else if (this.isKeyDown(mc, testingKey3)) {
+		else if (this.isKeyDown(mc, testingKeyN)) {
 			WorldHacks.loadWorld();
 		}
-		else if (this.isKeyDown(mc, testingKey4)) {
+		else if (this.isKeyDown(mc, testingKeyM)) {
 			WorldHacks.loadPlayer();
 		}
-		else if (this.isKeyDown(mc, testingKey5)) {
-			WorldHacks.showTickets();
+		else if (this.isKeyDown(mc, testingKeyF12)) {
 		}
 	}
 
