@@ -4,12 +4,20 @@
 	"package": "com.minecrafttas.savestatemod.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		//Savestate
 		"MixinChunkMap",
 		"MixinMinecraftServer",
 		"MixinChunkHolder",
+		//"MixinServerChunkCache",
+		"accessors.AccessorLevelStorage",
+		
+		//Networking
 		"networking.MixinServerGamePacketListenerImpl",
 		"networking.AccessorServerBoundCustomPayloadPacket",
-		"accessors.AccessorLevelStorage"
+		
+		//TickrateChanger
+		"tickratechanger.MixinDedicatedServer",
+		"tickratechanger.MixinMinecraftServer"
 	],
 	"client": [
 		"client.events.HookMinecraft",
@@ -20,7 +28,11 @@
 		//Keybinding
 		"client.keybinds.KBAccessorKeyMapping",
 		"client.keybinds.KBHookMinecraft",
-		"client.keybinds.KBHookOptions"
+		"client.keybinds.KBHookOptions",
+		
+		//TickrateChanger
+		"client.tickratechanger.MixinTimer",
+		"client.tickratechanger.MixinMinecraft"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -10,7 +10,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
 
 /**
  * Main keybind manager of the mod
@@ -21,24 +20,36 @@ import net.minecraft.network.chat.TextComponent;
 public class KeybindManager extends KeybindManagerBase{
 	
 	private KeyMapping savestateKey = new KeyMapping("Create Savestate", GLFW.GLFW_KEY_J, "SavestateMod");
+	private KeyMapping loadstateKey = new KeyMapping("Load Savestate", GLFW.GLFW_KEY_K, "SavestateMod");
 	
-	private KeyMapping testingKeyV = new KeyMapping("Testing1", GLFW.GLFW_KEY_V, "SavestateMod");
-	private KeyMapping testingKeyB = new KeyMapping("Testing2", GLFW.GLFW_KEY_B, "SavestateMod");
-	private KeyMapping testingKeyN = new KeyMapping("Testing3", GLFW.GLFW_KEY_N, "SavestateMod");
-	private KeyMapping testingKeyM = new KeyMapping("Testing4", GLFW.GLFW_KEY_M, "SavestateMod");
-	private KeyMapping testingKeyF12 = new KeyMapping("Testing5", GLFW.GLFW_KEY_F12, "SavestateMod");
+	private KeyMapping tickadvanceToggleKey = new KeyMapping("Toggle Tickadvance", GLFW.GLFW_KEY_F8, "SavestateMod");
+	private KeyMapping tickadvanceAdvance = new KeyMapping("Advance a tick", GLFW.GLFW_KEY_F9, "SavestateMod");
+	
+//	private KeyMapping testingKeyV = new KeyMapping("Testing1", GLFW.GLFW_KEY_V, "SavestateMod");
+//	private KeyMapping testingKeyB = new KeyMapping("Testing2", GLFW.GLFW_KEY_B, "SavestateMod");
+//	private KeyMapping testingKeyN = new KeyMapping("Testing3", GLFW.GLFW_KEY_N, "SavestateMod");
+//	private KeyMapping testingKeyM = new KeyMapping("Testing4", GLFW.GLFW_KEY_M, "SavestateMod");
+//	private KeyMapping testingKeyF12 = new KeyMapping("Testing5", GLFW.GLFW_KEY_F12, "SavestateMod");
 
 	@Override
 	public void onGameLoop(Minecraft mc) {
 		if (isKeyDown(mc, savestateKey)) {
-			mc.gui.getChat().addMessage(new TextComponent("Savestating..."));
 			SavestateMod.getInstance().getSavestateHandler().requestSavestate();
+		}
+		else if(isKeyDown(mc, loadstateKey)) {
+			SavestateMod.getInstance().getSavestateHandler().requestLoadstate();
+		}
+		else if(isKeyDown(mc, tickadvanceToggleKey)) {
+			SavestateMod.getInstance().getTickAdvance().requestTickadvanceToggle();
+		}
+		else if(isKeyDown(mc, tickadvanceAdvance)) {
+			SavestateMod.getInstance().getTickAdvance().requestTickadvance();
 		}
 	}
 
 	@Override
 	public List<KeyMapping> registerKeyMappings() {
-		return List.of(savestateKey, testingKeyV, testingKeyB, testingKeyN, testingKeyM, testingKeyF12);
+		return List.of(savestateKey, loadstateKey, tickadvanceToggleKey, tickadvanceAdvance);
 	}
 
 }
