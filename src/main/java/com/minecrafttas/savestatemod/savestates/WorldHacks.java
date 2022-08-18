@@ -1,4 +1,4 @@
-package com.minecrafttas.savestatemod;
+package com.minecrafttas.savestatemod.savestates;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

@@ -6,11 +6,21 @@
 	"mixins": [
 		"MixinChunkMap",
 		"MixinMinecraftServer",
-		"MixinChunkHolder"
+		"MixinChunkHolder",
+		"networking.MixinServerGamePacketListenerImpl",
+		"networking.AccessorServerBoundCustomPayloadPacket",
+		"accessors.AccessorLevelStorage"
 	],
 	"client": [
-		"client.accessors.AccessorKeyMapping",
-		"client.HookMinecraft"
+		"client.events.HookMinecraft",
+		
+		//Networking
+		"client.networking.MixinClientGamePacketListenerImpl",
+		
+		//Keybinding
+		"client.keybinds.KBAccessorKeyMapping",
+		"client.keybinds.KBHookMinecraft",
+		"client.keybinds.KBHookOptions"
 	],
 	"injectors": {
 		"defaultRequire": 1

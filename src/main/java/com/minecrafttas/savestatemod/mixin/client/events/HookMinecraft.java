@@ -1,11 +1,9 @@
-package com.minecrafttas.savestatemod.mixin.client;
+package com.minecrafttas.savestatemod.mixin.client.events;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.minecrafttas.savestatemod.ClientSavestateMod;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -33,7 +31,6 @@ public class HookMinecraft {
 
 	@Inject(method = "runTick", at = @At("HEAD"))
 	public void hookGameLoopEvent(CallbackInfo ci) {
-		ClientSavestateMod.keybindManager.onGameLoop((Minecraft)(Object)this);
 	}
 
 	@Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
