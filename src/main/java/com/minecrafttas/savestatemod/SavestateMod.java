@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.minecrafttas.savestatemod.networking.NetworkRegistry;
 import com.minecrafttas.savestatemod.savestates.SavestateHandler;
+import com.minecrafttas.savestatemod.tickratechanger.TickAdvance;
+import com.minecrafttas.savestatemod.tickratechanger.TickrateChanger;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.MinecraftServer;
@@ -17,6 +19,8 @@ public class SavestateMod implements ModInitializer {
 	
 	private KeybindManager keybindManager = new KeybindManager();
 	private SavestateHandler savestateHandler;
+	private TickrateChanger tickratechanger = new TickrateChanger();
+	private TickAdvance tickadvance =  new TickAdvance();
 	
 	public SavestateMod() {
 		instance=this;
@@ -25,6 +29,11 @@ public class SavestateMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Initialized");
+		NetworkRegistry.registerClient(tickratechanger);
+		NetworkRegistry.registerClient(tickadvance);
+		
+		NetworkRegistry.registerServer(tickratechanger);
+		NetworkRegistry.registerServer(tickadvance);
 	}
 
 	public static SavestateMod getInstance() {
@@ -34,6 +43,8 @@ public class SavestateMod implements ModInitializer {
 	public void onServerStart(MinecraftServer server) {
 		savestateHandler=new SavestateHandler(server, LOGGER);
 		NetworkRegistry.registerServer(savestateHandler);
+		tickratechanger.mcserver=server;
+		tickadvance.mcserver=server;
 	}
 	
 	public void onServerStop(MinecraftServer server) {
@@ -47,5 +58,13 @@ public class SavestateMod implements ModInitializer {
 
 	public KeybindManager getKeybindManager() {
 		return keybindManager;
+	}
+	
+	public TickrateChanger getTickrateChanger() {
+		return tickratechanger;
+	}
+
+	public TickAdvance getTickAdvance() {
+		return tickadvance;
 	}
 }

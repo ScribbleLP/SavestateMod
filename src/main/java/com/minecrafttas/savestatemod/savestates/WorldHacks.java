@@ -1,10 +1,13 @@
 package com.minecrafttas.savestatemod.savestates;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Unit;
 import net.minecraft.world.level.ChunkPos;
@@ -14,9 +17,10 @@ public class WorldHacks {
 	public static void unloadPlayers() {
 		MinecraftServer server=Minecraft.getInstance().getSingleplayerServer();
 		ServerLevel world=server.overworld();
-		server.getPlayerList().getPlayers().forEach(player -> {
+		List<ServerPlayer> players = server.getPlayerList().getPlayers();
+		for (ServerPlayer player : players) {
 			world.getChunkSource().removeEntity(player);
-		});
+		}
 	}
 	
 	public static void unloadWorld() {
