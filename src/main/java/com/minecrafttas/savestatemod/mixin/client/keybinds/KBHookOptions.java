@@ -17,7 +17,7 @@ import net.minecraft.client.Options;
 
 /**
  * Loads keybinds manually into the keymappings
- * @author Scribble
+ * @author Pancake
  */
 @Mixin(Options.class)
 @Environment(EnvType.CLIENT)

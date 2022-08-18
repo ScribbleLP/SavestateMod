@@ -13,7 +13,7 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 
 /**
- * This mixin is purely responsible for the hooking up the events in {@link ClientLoTAS}. It also cancels the logger
+ * Firing events for the NetworkRegistry
  * @author Pancake
  */
 @Mixin(ClientPacketListener.class)

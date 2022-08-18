@@ -12,7 +12,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 
 /**
- * Hooks into the tick funktion
+ * Hooks into the tick function
  * @author Scribble
  */
 @Mixin(Minecraft.class)
