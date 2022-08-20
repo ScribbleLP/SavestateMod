@@ -17,7 +17,12 @@
 		
 		//TickrateChanger
 		"tickratechanger.MixinDedicatedServer",
-		"tickratechanger.MixinMinecraftServer"
+		"tickratechanger.MixinMinecraftServer",
+		
+		//Regionfile
+		"regionfile.MixinRegionFileStorage",
+		"regionfile.MixinIOWorker",
+		"regionfile.MixinChunkStorage"
 	],
 	"client": [
 		"client.events.HookMinecraft",
