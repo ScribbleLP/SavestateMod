@@ -144,13 +144,14 @@ public class SavestateHandler implements IServerPacketHandler {
 		File currentfolder = new File(savestateDirectory, ".." + File.separator + worldname);
 		File targetfolder = new File(savestateDirectory, worldname);
 		
-		// Unload chunks on the server
+		// Unload players
 		WorldHacks.unloadPlayers();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		// Unload worlds
 		WorldHacks.unloadWorld();
 		
 		try {
@@ -159,6 +160,7 @@ public class SavestateHandler implements IServerPacketHandler {
 			e.printStackTrace();
 		}
 		
+		// Copy world
 		FileUtils.deleteDirectory(currentfolder);
 		FileUtils.copyDirectory(targetfolder, currentfolder);
 		
@@ -167,12 +169,14 @@ public class SavestateHandler implements IServerPacketHandler {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		// Load world
 		WorldHacks.loadWorld();
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		// Load players
 		WorldHacks.loadPlayer();
 		
 		tickadvance.tickadvance = false;
@@ -221,6 +225,10 @@ public class SavestateHandler implements IServerPacketHandler {
 	
 	private void sendMessage(MinecraftServer server, Component component) {
 		server.getPlayerList().broadcastMessage(component, ChatType.CHAT, Util.NIL_UUID);
+	}
+
+	public SavestateState getState() {
+		return state;
 	}
 
 }

@@ -10,6 +10,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.minecrafttas.savestatemod.SavestateMod;
+import com.minecrafttas.savestatemod.savestates.SavestateHandler;
+import com.minecrafttas.savestatemod.savestates.SavestateState;
 import com.mojang.datafixers.util.Either;
 
 import net.minecraft.server.level.ChunkHolder;
@@ -18,15 +21,21 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 
 @Mixin(ChunkHolder.class)
 public abstract class MixinChunkHolder {
-	
-	@Shadow @Final public AtomicReferenceArray<CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>>> futures;
-	
+
+	@Shadow
+	@Final
+	public AtomicReferenceArray<CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>>> futures;
+
 //	@Inject(method = "updateFutures", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/CompletableFuture;complete(Ljava/lang/Object;)Z"))
 	@Inject(method = "updateFutures", at = @At(value = "HEAD"))
 	public void onComplete(CallbackInfo ci) {
-		for (int i = 0; i < futures.length(); i++) {
-			futures.set(i, null);
+		
+		SavestateHandler handler = SavestateMod.getInstance().getSavestateHandler();
+		
+		if (handler!=null && handler.getState() == SavestateState.LOADING) {
+			for (int i = 0; i < futures.length(); i++) {
+				futures.set(i, null);
+			}
 		}
 	}
-	
 }

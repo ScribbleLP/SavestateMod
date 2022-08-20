@@ -2,6 +2,8 @@ package com.minecrafttas.savestatemod.savestates;
 
 import java.util.List;
 
+import com.minecrafttas.savestatemod.savestates.duck.RegionFileStorageDuck;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
@@ -11,6 +13,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Unit;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.storage.ChunkStorage;
 
 public class WorldHacks {
 	
@@ -42,6 +46,8 @@ public class WorldHacks {
 		ServerChunkCache chunkSource=level.getChunkSource();
 		
 		ChunkPos chunkPos = new ChunkPos(new BlockPos(level.getLevelData().getXSpawn(), 0, level.getLevelData().getZSpawn()));
+		
+		((RegionFileStorageDuck)(ChunkStorage)chunkSource.chunkMap).clearRegionFileStorage();
 		chunkSource.addRegionTicket(TicketType.START, chunkPos, 11, Unit.INSTANCE);
 		
 	}
