@@ -35,10 +35,10 @@ public class KeybindManager extends KeybindManagerBase{
 	@Override
 	public void onGameLoop(Minecraft mc) {
 		if (isKeyDown(mc, savestateKey)) {
-			SavestateMod.getInstance().getSavestateHandler().requestSavestate();
+			ClientSavestateMod.getInstance().getSavestateHandler().requestSavestate();
 		}
 		else if(isKeyDown(mc, loadstateKey)) {
-			SavestateMod.getInstance().getSavestateHandler().requestLoadstate();
+			ClientSavestateMod.getInstance().getSavestateHandler().requestLoadstate();
 		}
 		else if(isKeyDown(mc, tickadvanceToggleKey)) {
 			SavestateMod.getInstance().getTickAdvance().requestTickadvanceToggle();
@@ -48,16 +48,16 @@ public class KeybindManager extends KeybindManagerBase{
 		}
 		
 		else if(isKeyDown(mc, testingKeyV)) {
-			WorldHacks.unloadPlayers();
+			WorldHacks.unloadPlayers(mc.getSingleplayerServer());
 		}
 		else if(isKeyDown(mc, testingKeyB)) {
-			WorldHacks.unloadWorld();
+			WorldHacks.unloadWorlds(mc.getSingleplayerServer());
 		}
 		else if(isKeyDown(mc, testingKeyN)) {
-			WorldHacks.loadWorld();
+			WorldHacks.loadWorlds(mc.getSingleplayerServer());
 		}
 		else if(isKeyDown(mc, testingKeyM)) {
-			WorldHacks.loadPlayer();
+			WorldHacks.loadPlayers(mc.getSingleplayerServer());
 		}
 	}
 

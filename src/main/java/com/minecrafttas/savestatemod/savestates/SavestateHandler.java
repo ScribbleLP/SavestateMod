@@ -47,12 +47,24 @@ public class SavestateHandler implements IServerPacketHandler {
 	private static final ResourceLocation SAVESTATE_RL = new ResourceLocation("savestatemod", "savestate");
 	private static final ResourceLocation LOADSTATE_RL = new ResourceLocation("savestatemod", "loadstate");
 
+	/**
+	 * Serverside initialisation
+	 * @param server
+	 * @param logger
+	 */
 	public SavestateHandler(MinecraftServer server, Logger logger) {
 		this.server = server;
 		createSavestateDirectory();
 		this.logger = logger;
 	}
-
+	
+	/**
+	 * Clientside initialization
+	 */
+	public SavestateHandler(Logger logger) {
+		this.logger=logger;
+	}
+	
 	private void createSavestateDirectory() {
 		if (!server.isDedicatedServer()) {
 			savestateDirectory = new File(server.getServerDirectory() + File.separator + "saves" + File.separator + "savestates" + File.separator);
@@ -86,7 +98,7 @@ public class SavestateHandler implements IServerPacketHandler {
 
 		// Enable tickrate 0
 		TickAdvance tickadvance = SavestateMod.getInstance().getTickAdvance();
-		tickadvance.tickadvance = true;
+		tickadvance.updateTickadvanceStatus(true);
 		
 		// Request motion from client
 		// TODO
@@ -115,7 +127,7 @@ public class SavestateHandler implements IServerPacketHandler {
 		// Savestate screen closing
 		// TODO
 
-		tickadvance.tickadvance = false;
+		tickadvance.updateTickadvanceStatus(false);
 		
 		// Unlock savestating
 		state = SavestateState.NONE;
@@ -134,7 +146,7 @@ public class SavestateHandler implements IServerPacketHandler {
 		
 		// Enable tickrate 0
 		TickAdvance tickadvance = SavestateMod.getInstance().getTickAdvance();
-		tickadvance.tickadvance = true;
+		tickadvance.updateTickadvanceStatus(true);
 		
 		// Create a directory just in case
 		createSavestateDirectory();
@@ -145,14 +157,14 @@ public class SavestateHandler implements IServerPacketHandler {
 		File targetfolder = new File(savestateDirectory, worldname);
 		
 		// Unload players
-		WorldHacks.unloadPlayers();
+		WorldHacks.unloadPlayers(server);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		// Unload worlds
-		WorldHacks.unloadWorld();
+		WorldHacks.unloadWorlds(server);
 		
 		try {
 			Thread.sleep(2000);
@@ -170,16 +182,16 @@ public class SavestateHandler implements IServerPacketHandler {
 			e.printStackTrace();
 		}
 		// Load world
-		WorldHacks.loadWorld();
+		WorldHacks.loadWorlds(server);
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		// Load players
-		WorldHacks.loadPlayer();
+		WorldHacks.loadPlayers(server);
 		
-		tickadvance.tickadvance = false;
+		tickadvance.updateTickadvanceStatus(false);
 		
 		state = SavestateState.NONE;
 		
