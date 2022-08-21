@@ -17,7 +17,6 @@ public class SavestateMod implements ModInitializer {
 	
 	public static final Logger LOGGER=LogManager.getFormatterLogger("SavestateMod");
 	
-	private KeybindManager keybindManager = new KeybindManager();
 	private SavestateHandler savestateHandler;
 	private TickrateChanger tickratechanger = new TickrateChanger();
 	private TickAdvance tickadvance =  new TickAdvance();
@@ -56,10 +55,6 @@ public class SavestateMod implements ModInitializer {
 		return savestateHandler;
 	}
 
-	public KeybindManager getKeybindManager() {
-		return keybindManager;
-	}
-	
 	public TickrateChanger getTickrateChanger() {
 		return tickratechanger;
 	}
