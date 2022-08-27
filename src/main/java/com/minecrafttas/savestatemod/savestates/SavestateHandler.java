@@ -49,6 +49,7 @@ public class SavestateHandler implements IServerPacketHandler {
 
 	/**
 	 * Serverside initialisation
+	 * 
 	 * @param server
 	 * @param logger
 	 */
@@ -57,14 +58,14 @@ public class SavestateHandler implements IServerPacketHandler {
 		createSavestateDirectory();
 		this.logger = logger;
 	}
-	
+
 	/**
 	 * Clientside initialization
 	 */
 	public SavestateHandler(Logger logger) {
-		this.logger=logger;
+		this.logger = logger;
 	}
-	
+
 	private void createSavestateDirectory() {
 		if (!server.isDedicatedServer()) {
 			savestateDirectory = new File(server.getServerDirectory() + File.separator + "saves" + File.separator + "savestates" + File.separator);
@@ -99,7 +100,7 @@ public class SavestateHandler implements IServerPacketHandler {
 		// Enable tickrate 0
 		TickAdvance tickadvance = SavestateMod.getInstance().getTickAdvance();
 		tickadvance.updateTickadvanceStatus(true);
-		
+
 		// Request motion from client
 		// TODO
 
@@ -128,13 +129,13 @@ public class SavestateHandler implements IServerPacketHandler {
 		// TODO
 
 		tickadvance.updateTickadvanceStatus(false);
-		
+
 		// Unlock savestating
 		state = SavestateState.NONE;
 		sendMessage(server, new TextComponent(ChatFormatting.GREEN + "Savestate saved!"));
 	}
 
-	public void loadstate() throws LoadstateException, IOException{
+	public void loadstate() throws LoadstateException, IOException {
 		if (state == SavestateState.SAVING) {
 			throw new LoadstateException("A savestating operation is already being carried out");
 		}
@@ -143,75 +144,70 @@ public class SavestateHandler implements IServerPacketHandler {
 		}
 		// Lock savestating and loadstating
 		state = SavestateState.LOADING;
-		
+
 		// Enable tickrate 0
 		TickAdvance tickadvance = SavestateMod.getInstance().getTickAdvance();
 		tickadvance.updateTickadvanceStatus(true);
-		
+
 		// Create a directory just in case
 		createSavestateDirectory();
-		
+
 		// Get the current and target directory for copying
 		String worldname = getWorldName();
 		File currentfolder = new File(savestateDirectory, ".." + File.separator + worldname);
 		File targetfolder = new File(savestateDirectory, worldname);
-		
+
+		logger.info("Unloading players");
 		// Unload players
 		WorldHacks.unloadPlayers(server);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		
+//		server.executeBlocking(()->server.runningTask());
+		
+		logger.info("Unloading world");
 		// Unload worlds
 		WorldHacks.unloadWorlds(server);
 		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		server.runAllTasks();
 		
+		logger.info("Deleting directory");
 		// Copy world
-		FileUtils.deleteDirectory(currentfolder);
-		FileUtils.copyDirectory(targetfolder, currentfolder);
-		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (targetfolder.exists()) {
+			FileUtils.deleteDirectory(currentfolder);
+			logger.info("Copy directory");
+			FileUtils.copyDirectory(targetfolder, currentfolder);
 		}
+
+		logger.info("Load worlds");
 		// Load world
 		WorldHacks.loadWorlds(server);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		
+		logger.info("Load players");
 		// Load players
 		WorldHacks.loadPlayers(server);
 		
+		server.runAllTasks();
+		
+
 		tickadvance.updateTickadvanceStatus(false);
-		
+
 		state = SavestateState.NONE;
-		
+
 		sendMessage(server, new TextComponent(ChatFormatting.GREEN + "Savestate loaded"));
 	}
-	
+
 	@Environment(EnvType.CLIENT)
 	public void requestSavestate() {
 		FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 		Minecraft mc = Minecraft.getInstance();
 		mc.getConnection().send(new ServerboundCustomPayloadPacket(SAVESTATE_RL, buf));
 	}
-	
+
 	@Environment(EnvType.CLIENT)
 	public void requestLoadstate() {
 		FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 		Minecraft mc = Minecraft.getInstance();
 		mc.getConnection().send(new ServerboundCustomPayloadPacket(LOADSTATE_RL, buf));
 	}
-
 
 	@Override
 	public void onServerPacket(ServerboundCustomPayloadPacketDuck packet) {
@@ -224,8 +220,7 @@ public class SavestateHandler implements IServerPacketHandler {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-		else if(packet.getIdentifier().equals(LOADSTATE_RL)) {
+		} else if (packet.getIdentifier().equals(LOADSTATE_RL)) {
 			try {
 				logger.info("Loadstating!");
 				loadstate();
@@ -234,7 +229,7 @@ public class SavestateHandler implements IServerPacketHandler {
 			}
 		}
 	}
-	
+
 	private void sendMessage(MinecraftServer server, Component component) {
 		server.getPlayerList().broadcastMessage(component, ChatType.CHAT, Util.NIL_UUID);
 	}

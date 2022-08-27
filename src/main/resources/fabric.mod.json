@@ -16,6 +16,7 @@
 	"license": "GPLv3",
 	"icon": "",
 	"environment": "*",
+	"accessWidener": "savestatemod.accesswidener",
 	"entrypoints": {
 		"main": [
 			"com.minecrafttas.savestatemod.SavestateMod"

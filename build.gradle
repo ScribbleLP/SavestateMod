@@ -54,3 +54,7 @@ jar {
 		rename { "LICENSE_${project.archivesBaseName}"}
 	}
 }
+
+loom {
+	accessWidenerPath = file("src/main/resources/savestatemod.accesswidener")
+}

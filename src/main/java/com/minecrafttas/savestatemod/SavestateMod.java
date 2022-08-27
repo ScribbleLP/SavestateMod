@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.minecrafttas.savestatemod.networking.NetworkRegistry;
 import com.minecrafttas.savestatemod.savestates.SavestateHandler;
+import com.minecrafttas.savestatemod.savestates.SavestateState;
 import com.minecrafttas.savestatemod.tickratechanger.TickAdvance;
 import com.minecrafttas.savestatemod.tickratechanger.TickrateChanger;
 
@@ -61,5 +62,9 @@ public class SavestateMod implements ModInitializer {
 
 	public TickAdvance getTickAdvance() {
 		return tickadvance;
+	}
+	
+	public static boolean isLoadstating() {
+		return instance.savestateHandler.getState() == SavestateState.LOADING;
 	}
 }
