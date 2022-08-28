@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecrafttas.savestatemod.networking.NetworkRegistry;
 
-import net.minecraft.network.protocol.PacketUtils;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -25,7 +24,6 @@ public class MixinServerGamePacketListenerImpl {
 	 */
 	@Inject(method = "handleCustomPayload", at = @At("HEAD"))
 	public void hookCustomPayloadEvent(ServerboundCustomPayloadPacket packet, CallbackInfo ci) {
-		PacketUtils.ensureRunningOnSameThread(packet, (ServerGamePacketListenerImpl)(Object)this, this.player.getLevel());
-		NetworkRegistry.fireServerPackets(packet);
+		NetworkRegistry.fireServerPackets(packet, (ServerGamePacketListenerImpl)(Object)this, this.player);
 	}
 }

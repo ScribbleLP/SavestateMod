@@ -5,8 +5,12 @@ import java.util.List;
 
 import com.minecrafttas.savestatemod.networking.duck.ServerboundCustomPayloadPacketDuck;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 /**
  * Simple network packet registry for adding handlers to classes.
@@ -68,20 +72,24 @@ public class NetworkRegistry {
 	/**
 	 * Fires an event when a packet is received on the client side. Do not use!
 	 * @param packet
+	 * @param minecraft 
+	 * @param clientPacketListener 
 	 */
-	public static void fireClientPackets(ClientboundCustomPayloadPacket packet) {
+	public static void fireClientPackets(ClientboundCustomPayloadPacket packet, ClientPacketListener clientPacketListener, Minecraft minecraft) {
 		for (IClientPacketHandler handler : clientRegistry) {
-			handler.onClientPacket(packet);
+			handler.onClientPacket(packet, clientPacketListener, minecraft);
 		}
 	}
 
 	/**
 	 * Fires an event when a packet is received on the server side. Do not use!
 	 * @param packet
+	 * @param player 
+	 * @param serverGamePacketListenerImpl 
 	 */
-	public static void fireServerPackets(ServerboundCustomPayloadPacket packet) {
+	public static void fireServerPackets(ServerboundCustomPayloadPacket packet, ServerGamePacketListenerImpl serverGamePacketListenerImpl, ServerPlayer player) {
 		for (IServerPacketHandler handler : serverRegistry) {
-			handler.onServerPacket((ServerboundCustomPayloadPacketDuck) packet);
+			handler.onServerPacket((ServerboundCustomPayloadPacketDuck) packet, serverGamePacketListenerImpl, player);
 		}
 	}
 

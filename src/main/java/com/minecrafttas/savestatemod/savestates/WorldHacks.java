@@ -40,13 +40,15 @@ public class WorldHacks {
 			ServerLevel level = levels.next();
 			ServerChunkCache chunkSource=level.getChunkSource();
 			
-			level.save(null, true, false);
+//			level.save(null, true, false);
 			
 			if(level.dimensionType() == DimensionType.defaultOverworld()) {
 				ChunkPos chunkPos = new ChunkPos(new BlockPos(level.getLevelData().getXSpawn(), 0, level.getLevelData().getZSpawn()));
 				chunkSource.removeRegionTicket(TicketType.START, chunkPos, 11, Unit.INSTANCE);
 			}
 		}
+		
+		server.runAllTasks();
 	}
 	
 	public static void loadWorlds(MinecraftServer server) {

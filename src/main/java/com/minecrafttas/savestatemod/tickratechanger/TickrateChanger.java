@@ -17,12 +17,14 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 /**
  * Main tickrate changer
@@ -56,8 +58,9 @@ public class TickrateChanger implements IClientPacketHandler, IServerPacketHandl
 	 * Updates the Client tickrate when receiving a packet
 	 * @param p Incoming Packet
 	 */
+	@Override
 	@Environment(EnvType.CLIENT)
-	public void onClientPacket(ClientboundCustomPayloadPacket p) {
+	public void onClientPacket(ClientboundCustomPayloadPacket p, ClientPacketListener clientPacketListener, Minecraft minecraft) {
 		if (TICKRATE_CHANGER_RL.equals(p.getIdentifier())) {
 			this.internallyUpdateTickrate(p.getData().readDouble());
 			// Update the local time
@@ -70,7 +73,7 @@ public class TickrateChanger implements IClientPacketHandler, IServerPacketHandl
 
 
 	@Override
-	public void onServerPacket(ServerboundCustomPayloadPacketDuck packet) {
+	public void onServerPacket(ServerboundCustomPayloadPacketDuck packet, ServerGamePacketListenerImpl serverGamePacketListenerImpl, ServerPlayer player) {
 		if (TICKRATE_CHANGER_RL.equals(packet.getIdentifier())) this.updateTickrate(packet.getData().readDouble());
 	}
 
