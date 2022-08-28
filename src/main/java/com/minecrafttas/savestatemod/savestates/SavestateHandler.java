@@ -24,9 +24,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.protocol.PacketUtils;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.level.storage.LevelStorageSource.LevelStorageAccess;
 
 /**
@@ -107,6 +110,8 @@ public class SavestateHandler implements IServerPacketHandler {
 		// Save the world to the file system
 		server.getPlayerList().saveAll();
 		server.saveAllChunks(false, true, true);
+		
+		server.runAllTasks();
 
 		// Get the current and target directory for copying
 		String worldname = getWorldName();
@@ -161,13 +166,9 @@ public class SavestateHandler implements IServerPacketHandler {
 		// Unload players
 		WorldHacks.unloadPlayers(server);
 		
-//		server.executeBlocking(()->server.runningTask());
-		
 		logger.info("Unloading world");
 		// Unload worlds
 		WorldHacks.unloadWorlds(server);
-		
-		server.runAllTasks();
 		
 		logger.info("Deleting directory");
 		// Copy world
@@ -187,7 +188,6 @@ public class SavestateHandler implements IServerPacketHandler {
 		
 		server.runAllTasks();
 		
-
 		tickadvance.updateTickadvanceStatus(false);
 
 		state = SavestateState.NONE;
@@ -210,7 +210,11 @@ public class SavestateHandler implements IServerPacketHandler {
 	}
 
 	@Override
-	public void onServerPacket(ServerboundCustomPayloadPacketDuck packet) {
+	public void onServerPacket(ServerboundCustomPayloadPacketDuck packet, ServerGamePacketListenerImpl serverGamePacketListenerImpl, ServerPlayer player) {
+		
+		// Let the packet run on the server thread
+		PacketUtils.ensureRunningOnSameThread((ServerboundCustomPayloadPacket) packet, serverGamePacketListenerImpl, player.getLevel());
+		
 		if (packet.getIdentifier().equals(SAVESTATE_RL)) {
 			try {
 				logger.info("Savestating!");

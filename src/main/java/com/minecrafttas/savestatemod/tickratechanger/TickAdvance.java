@@ -8,12 +8,14 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 /**
  * Tick advance for minecraft.
@@ -40,7 +42,7 @@ public class TickAdvance implements IClientPacketHandler, IServerPacketHandler{
 	 */
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void onClientPacket(ClientboundCustomPayloadPacket p) {
+	public void onClientPacket(ClientboundCustomPayloadPacket p, ClientPacketListener clientPacketListener, Minecraft minecraft) {
 		if (TICK_ADVANCE_RL.equals(p.getIdentifier()))
 			this.tickadvance = p.getData().readBoolean();
 		if (TICK_RL.equals(p.getIdentifier()))
@@ -51,7 +53,7 @@ public class TickAdvance implements IClientPacketHandler, IServerPacketHandler{
 	 * Updates the server tickadvance status and resend when receiving a packet
 	 */
 	@Override
-	public void onServerPacket(ServerboundCustomPayloadPacketDuck packet) {
+	public void onServerPacket(ServerboundCustomPayloadPacketDuck packet, ServerGamePacketListenerImpl serverGamePacketListenerImpl, ServerPlayer player) {
 		if (TICK_ADVANCE_RL.equals(packet.getIdentifier()))
 			this.updateTickadvanceStatus(packet.getData().readBoolean());
 		if (TICK_RL.equals(packet.getIdentifier()))
