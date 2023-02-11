@@ -23,7 +23,7 @@ public interface IClientPacketHandler {
 	 * // Check the packet identifier 
 	 * if (ResourceLocation.equals(packet.getIdentifier())) {
 	 * 
-	 *	// Check if the current thread is the server thread
+	 *	// Check if the current thread is the client thread
 	 *	PacketUtils.ensureRunningOnSameThread(packet, 
 	 *						clientPacketListener,
 	 *						minecraft);
