@@ -1,6 +1,7 @@
 package com.minecrafttas.savestatemod.mixin.accessors;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.server.MinecraftServer;
@@ -12,6 +13,7 @@ public interface AccessorLevelStorage {
 	@Accessor
 	public LevelStorageSource.LevelStorageAccess getStorageSource();
 	
-	@Accessor("worldData")
+	@Accessor("worldData") @Mutable
 	public void setWorldData(WorldData data);
+	
 }
