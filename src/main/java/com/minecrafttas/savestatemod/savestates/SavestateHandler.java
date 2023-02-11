@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.minecrafttas.savestatemod.SavestateMod;
 import com.minecrafttas.savestatemod.mixin.accessors.AccessorLevelStorage;
+import com.minecrafttas.savestatemod.networking.IClientPacketHandler;
 import com.minecrafttas.savestatemod.networking.IServerPacketHandler;
 import com.minecrafttas.savestatemod.networking.duck.ServerboundCustomPayloadPacketDuck;
 import com.minecrafttas.savestatemod.savestates.exceptions.LoadstateException;
@@ -20,11 +21,13 @@ import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.PacketUtils;
+import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -38,7 +41,7 @@ import net.minecraft.world.level.storage.LevelStorageSource.LevelStorageAccess;
  * @author Scribble
  *
  */
-public class SavestateHandler implements IServerPacketHandler {
+public class SavestateHandler implements IServerPacketHandler, IClientPacketHandler {
 
 	private MinecraftServer server;
 	private File savestateDirectory;
@@ -195,6 +198,9 @@ public class SavestateHandler implements IServerPacketHandler {
 		sendMessage(server, new TextComponent(ChatFormatting.GREEN + "Savestate loaded"));
 	}
 
+	/**
+	 * Sends a message to the server to request a savestate to be made
+	 */
 	@Environment(EnvType.CLIENT)
 	public void requestSavestate() {
 		FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
@@ -202,6 +208,9 @@ public class SavestateHandler implements IServerPacketHandler {
 		mc.getConnection().send(new ServerboundCustomPayloadPacket(SAVESTATE_RL, buf));
 	}
 
+	/**
+	 * Sends a message to the server to request a loadstate to execute
+	 */
 	@Environment(EnvType.CLIENT)
 	public void requestLoadstate() {
 		FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
@@ -240,6 +249,12 @@ public class SavestateHandler implements IServerPacketHandler {
 
 	public SavestateState getState() {
 		return state;
+	}
+
+	@Override
+	public void onClientPacket(ClientboundCustomPayloadPacket packet, ClientPacketListener clientPacketListener, Minecraft minecraft) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -5,9 +5,13 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.world.level.storage.WorldData;
 
 @Mixin(MinecraftServer.class)
 public interface AccessorLevelStorage {
 	@Accessor
 	public LevelStorageSource.LevelStorageAccess getStorageSource();
+	
+	@Accessor("worldData")
+	public void setWorldData(WorldData data);
 }

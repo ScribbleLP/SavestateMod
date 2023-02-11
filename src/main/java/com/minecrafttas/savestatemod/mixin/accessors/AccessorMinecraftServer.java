@@ -9,4 +9,5 @@ import net.minecraft.server.MinecraftServer;
 public interface AccessorMinecraftServer {
 	@Invoker("waitUntilNextTick")
 	public void invokeWaitUntilNextTick();
+	
 }
