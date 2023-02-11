@@ -10,6 +10,8 @@
 		"MixinChunkHolder",
 		//"MixinServerChunkCache",
 		"accessors.AccessorLevelStorage",
+		"accessors.AccessorServerLevel",
+		"accessors.AccessorLevel",
 		
 		//Networking
 		"networking.MixinServerGamePacketListenerImpl",
