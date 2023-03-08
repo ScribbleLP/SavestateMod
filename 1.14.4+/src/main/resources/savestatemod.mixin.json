@@ -1,0 +1,50 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.minecrafttas.savestatemod.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		//Savestate
+		"MixinChunkMap",
+		"MixinMinecraftServer",
+		"MixinChunkHolder",
+		//"MixinServerChunkCache",
+		"accessors.AccessorLevelStorage",
+		"accessors.AccessorServerLevel",
+		"accessors.AccessorLevel",
+		"accessors.AccessorBlockableEventLoop",
+		
+		//Networking
+		"networking.MixinServerGamePacketListenerImpl",
+		"networking.AccessorServerBoundCustomPayloadPacket",
+		
+		//TickrateChanger
+		"tickratechanger.MixinDedicatedServer",
+		"tickratechanger.MixinMinecraftServer",
+		
+		//Regionfile
+		"regionfile.MixinRegionFileStorage",
+		//#1.16.1
+//$$		"regionfile.MixinIOWorker",
+		//#end
+		"regionfile.MixinChunkStorage"
+	],
+	"client": [
+		"client.events.HookMinecraft",
+		
+		//Networking
+		"client.networking.MixinClientGamePacketListenerImpl",
+		
+		//Keybinding
+		"client.keybinds.KBAccessorKeyMapping",
+		"client.keybinds.KBHookMinecraft",
+		"client.keybinds.KBHookOptions",
+		
+		//TickrateChanger
+		"client.tickratechanger.MixinTimer",
+		"client.tickratechanger.MixinMinecraft"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
