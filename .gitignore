@@ -11,3 +11,12 @@ run/
 .settings
 .gradle
 .project
+.metadata
+
+Fabric1.14.4/
+Fabric1.15.2/
+Fabric1.16.1/
+Fabric1.16.5/
+Fabric1.17.1/
+Fabric1.18.2/
+Fabric1.19.3/

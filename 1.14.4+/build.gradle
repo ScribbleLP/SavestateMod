@@ -1,0 +1,68 @@
+/* Add Plugins required for LoTAS */
+plugins {
+	id 'discombobulator' version '1.1.1'
+}
+
+/* Configure Discombobulator */
+discombobulator {
+	versions = [
+		"1.19.3: Fabric1.19.3",
+		"1.18.2: Fabric1.18.2",
+		"1.17.1: Fabric1.17.1",
+		"1.16.5: Fabric1.16.5",
+		"1.16.1: Fabric1.16.1",
+		"1.15.2: Fabric1.15.2",
+		"1.14.4: Fabric1.14.4"
+	]
+	patterns = [
+		GetWindow: [
+			"def": "mc.window",
+			"1.15.2": "mc.getWindow()"
+		],
+		WorldBorder: [
+			"def": "renderWorldBounds",
+			"1.17.1": "renderWorldBorder"
+		],
+		RunServer: [
+			"def": '"run"',
+			"1.16.1": '"runServer"'
+		],
+		Profiler: [
+			"def": "Lnet/minecraft/util/profiling/GameProfiler;",
+			"1.16.1": "Lnet/minecraft/util/profiling/ProfilerFiller;"
+		],
+		RandomSourceDescriptor: [
+			"def": "Ljava/util/Random;",
+			"1.19.3": "Lnet/minecraft/util/RandomSource;"
+		],
+		RngSourceClass: [
+			"def": "Random ",
+			"1.19.3": "RandomSource "
+		],
+		RandomSourceImport: [
+			"def": "import java.util.Random;",
+			"1.19.3": "import net.minecraft.util.RandomSource;"
+		],
+		PostRender: [
+			"def": "Lnet/minecraft/client/gui/components/toasts/ToastComponent;render()V",
+			"1.16.1": "Lnet/minecraft/client/gui/components/toasts/ToastComponent;render(Lcom/mojang/blaze3d/vertex/PoseStack;)V"
+		],
+		Toast: [
+			"def": "render(II)Z",
+			"1.16.1": "render(IILcom/mojang/blaze3d/vertex/PoseStack;)Z",
+			"1.19.3": "render(ILcom/mojang/blaze3d/vertex/PoseStack;)Z"
+		],
+		LootTag: [
+			"def": "Tag<",
+			"1.18.2": "TagKey<"
+		],
+		LootImportTag: [
+			"def": "Tag;",
+			"1.18.2": "TagKey;"
+		],
+		TextComponent: [
+			"def": "new net.minecraft.network.chat.TextComponent",
+			"1.19.3": "net.minecraft.network.chat.Component.literal"
+		]
+	]
+}

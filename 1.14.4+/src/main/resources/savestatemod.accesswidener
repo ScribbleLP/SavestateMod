@@ -1,0 +1,5 @@
+accessWidener	v1	named
+##1.19.3
+#$$accessible method net/minecraft/server/WorldLoader loadAndReplaceLayer (Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/core/LayeredRegistryAccess;Lnet/minecraft/server/RegistryLayer;Ljava/util/List;)Lnet/minecraft/core/LayeredRegistryAccess;
+#$$accessible field net/minecraft/server/WorldLoader$InitConfig packConfig Lnet/minecraft/server/WorldLoader$PackConfig;
+##end
