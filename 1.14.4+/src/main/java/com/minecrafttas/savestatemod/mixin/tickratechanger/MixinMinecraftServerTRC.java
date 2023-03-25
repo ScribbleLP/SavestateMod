@@ -55,7 +55,7 @@ import net.minecraft.server.MinecraftServer;
  * @author Scribble
  */
 @Mixin(MinecraftServer.class)
-public abstract class MixinMinecraftServer {
+public abstract class MixinMinecraftServerTRC {
 
 	@Shadow
 	private long nextTickTime;
@@ -70,7 +70,14 @@ public abstract class MixinMinecraftServer {
 	 * @param ignored the value that was originally used, in this case 50L
 	 * @return Milliseconds per tick
 	 */
-	@ModifyConstant(method = "runServer", constant = @Constant(longValue = 50L))
+	
+	@ModifyConstant(
+	//#1.16.1
+//$$	method = "runServer", 
+	//#def
+//$$	method = "run", 
+	//#end
+	constant = @Constant(longValue = 50L))
 	private long serverTickWaitTime(long ignored) {
 		return (long) SavestateMod.getInstance().getTickrateChanger().getMsPerTick();
 	}
@@ -81,7 +88,13 @@ public abstract class MixinMinecraftServer {
 	 * 
 	 * @return Modified measuring time
 	 */
-	@Redirect(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;getMillis()J"))
+	@Redirect(
+	//#1.16.1
+//$$	method = "runServer", 
+	//#def
+//$$	method = "run", 
+	//#end
+	at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;getMillis()J"))
 	public long redirectGetMillis() {
 		return this.getCurrentTime();
 	}

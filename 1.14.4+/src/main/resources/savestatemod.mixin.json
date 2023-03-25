@@ -13,14 +13,15 @@
 		"accessors.AccessorServerLevel",
 		"accessors.AccessorLevel",
 		"accessors.AccessorBlockableEventLoop",
+		"accessors.AccessorServerChunkCache",
 		
 		//Networking
 		"networking.MixinServerGamePacketListenerImpl",
 		"networking.AccessorServerBoundCustomPayloadPacket",
 		
 		//TickrateChanger
-		"tickratechanger.MixinDedicatedServer",
-		"tickratechanger.MixinMinecraftServer",
+		"tickratechanger.MixinDedicatedServerTRC",
+		"tickratechanger.MixinMinecraftServerTRC",
 		
 		//Regionfile
 		"regionfile.MixinRegionFileStorage",
