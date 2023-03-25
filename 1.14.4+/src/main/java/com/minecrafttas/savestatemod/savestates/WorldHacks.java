@@ -4,23 +4,33 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.minecrafttas.savestatemod.SavestateMod;
 import com.minecrafttas.savestatemod.mixin.accessors.AccessorBlockableEventLoop;
+import com.minecrafttas.savestatemod.mixin.accessors.AccessorLevel;
 import com.minecrafttas.savestatemod.mixin.accessors.AccessorLevelStorage;
+import com.minecrafttas.savestatemod.mixin.accessors.AccessorServerChunkCache;
+import com.minecrafttas.savestatemod.mixin.accessors.AccessorServerLevel;
 import com.minecrafttas.savestatemod.savestates.duck.RegionFileStorageDuck;
 import com.mojang.datafixers.util.Pair;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectSortedSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.DistanceManager;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.Ticket;
 import net.minecraft.server.level.TicketType;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.util.Unit;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.storage.ChunkStorage;
 import net.minecraft.world.level.dimension.DimensionType;
 //#1.19.3
@@ -89,11 +99,11 @@ public class WorldHacks {
 	
 	public static void unloadWorlds(MinecraftServer server) {
 		
-		Iterator<ServerLevel> levels = server.getAllLevels().iterator();
-		
-		while(levels.hasNext()) {
-			ServerLevel level = levels.next();
+		for (ServerLevel level : server.getAllLevels()) {
 			ServerChunkCache chunkSource=level.getChunkSource();
+			DistanceManager distanceManager = ((AccessorServerChunkCache)chunkSource).getDistanceManager();
+			
+//			distanceManager.tickets.clear();
 			
 //			level.save(null, true, false);
 			((RegionFileStorageDuck)(ChunkStorage)chunkSource.chunkMap).clearRegionFileStorage();
@@ -109,6 +119,19 @@ public class WorldHacks {
 		}
 		
 		((AccessorBlockableEventLoop) server).runRunAllTasks();
+		
+		unloadEntities(server);
+	}
+	
+	public static void unloadEntities(MinecraftServer server) {
+		for (ServerLevel level : server.getAllLevels()) {
+			AccessorServerLevel accessor = (AccessorServerLevel)level;
+			accessor.getToAddAfterTick().clear();
+			//#1.16.1
+			//#def
+//$$			accessor.getGlobalEntities().clear();
+			//#end
+		}
 	}
 	
 	public static void loadWorlds(MinecraftServer server) {
@@ -162,6 +185,21 @@ public class WorldHacks {
 //$$			}
 //$$		}
 		//#def
+//$$		for (ServerLevel level : server.getAllLevels()) {
+//$$			LevelData data = loadWorldData(server);
+//$$			// Load level data
+//$$			if (level instanceof net.minecraft.server.level.DerivedServerLevel)
+//$$				data = new net.minecraft.world.level.storage.DerivedLevelData(data);
+//$$			
+//$$			((AccessorLevel)level).setLevelData(data);
+//$$			
+//$$			ServerChunkCache chunkSource=level.getChunkSource();
+//$$			
+//$$			if(level.getDimension().getType() == DimensionType.OVERWORLD) {
+//$$				ChunkPos chunkPos = new ChunkPos(new BlockPos(level.getLevelData().getXSpawn(), 0, level.getLevelData().getZSpawn()));
+//$$				chunkSource.addRegionTicket(TicketType.START, chunkPos, 11, Unit.INSTANCE);
+//$$			}
+//$$		}
 		//#end
 	}
 	
@@ -169,6 +207,11 @@ public class WorldHacks {
 		//#1.16.1
 //$$		server.getPlayerList().getPlayers().forEach(player -> {
 //$$			ServerLevel serverLevel=server.overworld();
+//$$			serverLevel.getChunkSource().addEntity(player);
+//$$		});
+		//#def
+//$$		server.getPlayerList().getPlayers().forEach(player -> {
+//$$			ServerLevel serverLevel=server.getLevel(DimensionType.OVERWORLD);
 //$$			serverLevel.getChunkSource().addEntity(player);
 //$$		});
 		//#end
@@ -230,7 +273,7 @@ public class WorldHacks {
 	//# def
 //$$	private static LevelData loadWorldData(MinecraftServer server) {
 //$$		SavestateHandler handler = SavestateMod.getInstance().getSavestateHandler();
-//$$		return LevelStorageSource.getLevelData(new java.io.File(handler.getSavestateDirectory()+".." + File.separator + server.getLevelIdName(), "level.dat"), server.getFixerUpper());
+//$$		return LevelStorageSource.getLevelData(new java.io.File(handler.getSavestateDirectory()+"/.." + File.separator + server.getLevelIdName(), "level.dat"), server.getFixerUpper());
 //$$	}
 	// # end
 	

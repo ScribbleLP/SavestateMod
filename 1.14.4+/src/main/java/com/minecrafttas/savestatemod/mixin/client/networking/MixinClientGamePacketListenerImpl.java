@@ -1,9 +1,11 @@
 package com.minecrafttas.savestatemod.mixin.client.networking;
 
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecrafttas.savestatemod.networking.NetworkRegistry;
@@ -30,4 +32,7 @@ public class MixinClientGamePacketListenerImpl {
 		NetworkRegistry.fireClientPackets(packet, (ClientPacketListener)(Object)this, minecraft);
 	}
 	
+	@Redirect(method = "handleCustomPayload", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V"))
+	public void redirect_handleCustomPayload(Logger logger, String msg, Object obj) {
+	}
 }

@@ -10,7 +10,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
  * @author Pancake
  */
 @Mixin(DedicatedServer.class)
-public class MixinDedicatedServer {
+public class MixinDedicatedServerTRC {
 
 	@Overwrite
     public long getMaxTickLength() {

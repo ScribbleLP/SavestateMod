@@ -13,13 +13,22 @@ import net.minecraft.server.MinecraftServer;
 @Mixin(MinecraftServer.class)
 public class MixinMinecraftServer {
 	
-	@Inject(method = "forceSynchronousWrites", at = @At("HEAD"), cancellable = true)
-	public void inject_forceSynchronousWrites(CallbackInfoReturnable<Boolean> ci) {
-		ci.setReturnValue(false);
-		ci.cancel();
-	}
+	//#1.16.1
+//$$	@Inject(method = "forceSynchronousWrites", at = @At("HEAD"), cancellable = true)
+//$$	public void inject_forceSynchronousWrites(CallbackInfoReturnable<Boolean> ci) {
+//$$		ci.setReturnValue(false);
+//$$		ci.cancel();
+//$$	}
+	//#end
 	
-	@Inject(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;updateStatusIcon(Lnet/minecraft/network/protocol/status/ServerStatus;)V"))
+
+	@Inject(
+	//#1.16.1
+//$$	method = "runServer", 
+	//#def
+//$$	method = "run", 
+	//#end
+	at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;updateStatusIcon(Lnet/minecraft/network/protocol/status/ServerStatus;)V"))
 	public void inject_runServer(CallbackInfo ci) {
 		SavestateMod.getInstance().onServerStart((MinecraftServer)(Object)this);
 	}

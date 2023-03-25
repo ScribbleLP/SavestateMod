@@ -3,3 +3,4 @@ accessWidener	v1	named
 #$$accessible method net/minecraft/server/WorldLoader loadAndReplaceLayer (Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/core/LayeredRegistryAccess;Lnet/minecraft/server/RegistryLayer;Ljava/util/List;)Lnet/minecraft/core/LayeredRegistryAccess;
 #$$accessible field net/minecraft/server/WorldLoader$InitConfig packConfig Lnet/minecraft/server/WorldLoader$PackConfig;
 ##end
+accessible field net/minecraft/server/level/DistanceManager tickets Lit/unimi/dsi/fastutil/longs/Long2ObjectOpenHashMap;

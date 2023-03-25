@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecrafttas.savestatemod.SavestateMod;
@@ -28,7 +29,11 @@ public class MixinTimer {
 	public float msPerTick;
 
 	@Inject(method = "advanceTime", at = @At("HEAD"))
-	public void onAdvanceTime(CallbackInfoReturnable<Integer> cir) {
+	//#1.16.1
+//$$	public void onAdvanceTime(CallbackInfoReturnable<Integer> cir) {
+	//#def
+//$$	public void onAdvanceTime(CallbackInfo cir) {
+	//#end
 		TickrateChanger tickratechanger = SavestateMod.getInstance().getTickrateChanger();
 		TickAdvance tickadvance = SavestateMod.getInstance().getTickAdvance();
 		
